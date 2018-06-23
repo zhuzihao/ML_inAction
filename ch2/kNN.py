@@ -34,3 +34,7 @@ def file2matrix(filename):
     for line in arrayOLines:
         line = line.strip()         # strip不含参数 移除字符串首位空格
         listFromLine = line.split('\t')         # 以\t划分字符串为list
+        returnMat[index,:] = listFromLine[0:3]
+        classLabelVector.append(int(listFromLine[-1]))
+        index += 1
+    return returnMat, classLabelVector
