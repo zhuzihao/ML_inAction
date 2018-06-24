@@ -1,5 +1,6 @@
 from numpy import *
 import operator
+from os import listdir          # 指定目录文件
 
 
 def createDataSet():
@@ -66,4 +67,25 @@ def datingClassTest():
             errorCount += 1.0
     print("总错误率为: %f" % (errorCount/float(numTestVecs)))
 
+
+def classifyPerson():
+    resultList = ['不喜欢', '一般', '喜欢']
+    percentTats = float(input("玩电视游戏的时间？"))
+    ffMiles = float(input("飞行里程数？"))
+    iceCream = float(input("吃冰激凌数?"))
+    datingDataMat, datingLabels = file2matrix('datingTestSet2.txt')
+    normMat ,ranges, minVals = autoNorm(datingDataMat)
+    inArr = array([ffMiles, percentTats, iceCream])
+    classifierResult = classify0(inArr-minVals/ranges, normMat, datingLabels, 3)
+    print("你喜欢的可能性？ ", resultList[classifierResult])
+
+
+def img2vector(filename):
+    returnVect = zeros((1, 1024))
+    fr = open(filename)
+    for i in range(32):
+        lineStr = fr.readline()         # 读取行
+        for j in range(32):
+            returnVect[0, 32*i+j] = int(lineStr[j])
+    return returnVect
 
