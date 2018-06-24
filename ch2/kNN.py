@@ -46,6 +46,24 @@ def autoNorm(dataSet):
     ranges = maxVals - minVals
     normDataSet = zeros(shape(dataSet))         # 创建和dataSet一样的0数组
     m = normDataSet.shape[0]            # shape为tuple, m为行
-    normDataet = dataSet - tile(minVals, (m, 1))           # 计算所有和最小的差值
+    normDataSet = dataSet - tile(minVals, (m, 1))           # 计算所有和最小的差值
     normDataSet = normDataSet/tile(ranges, (m, 1))           # 归一化
     return normDataSet, ranges, minVals
+
+
+def datingClassTest():
+    hoRatio = 0.10
+    datingDataMat, datingLabels = file2matrix('datingTestSet2.txt')
+    normMat, ranges, minvals = autoNorm(datingDataMat)
+    m = normMat.shape[0]
+    numTestVecs = int(m*hoRatio)            # 测试集占10%
+    errorCount = 0.0
+    for i in range (numTestVecs):
+        classifierResult = classify0(normMat[i, :], normMat[numTestVecs:m, :],          # 切片前10%为测试，后90%为训练
+                                     datingLabels[numTestVecs:m], 3)                    # 选取k为3
+        print("分类结果为: %d, 真实结果为: %d" % (classifierResult, datingLabels[i]))
+        if classifierResult != datingLabels[i]:
+            errorCount += 1.0
+    print("总错误率为: %f" % (errorCount/float(numTestVecs)))
+
+
