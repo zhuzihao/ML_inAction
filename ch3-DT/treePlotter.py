@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-decisionNode = dict(boxstyle="sawtooth",  fc="0,8")         # 定义3个dict用于存特征
+decisionNode = dict(boxstyle="sawtooth",  fc="0.8")         # 定义3个dict用于存特征
 leafNode = dict(boxstyle="round4", fc="0.8")
 arrow_args = dict(arrowstyle="<-")
 
@@ -17,3 +17,13 @@ def createPlot():
     plotNode('a decision node', (0.5, 0.1), (0.1, 0.5), decisionNode)
     plotNode('a leaf node', (0.8, 0.1), (0.3, 0.8), leafNode)
     plt.show()
+
+def getNumLeafs(myTree):
+    numLeafs = 0
+    firstStr = myTree.keys()[0]         # 获取根节点
+    secondDict = myTree[firstStr]           # 获取根节点的子树
+    for key in secondDict.keys():           # 判断子树是树还是叶子
+        if type(secondDict[key]).__name__=='dict':          # 是树递归调用
+            numLeafs += getNumLeafs(secondDict[key])
+        else:   numLeafs += 1           # 是叶子+1
+    return numLeafs
