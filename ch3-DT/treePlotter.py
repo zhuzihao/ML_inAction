@@ -27,3 +27,15 @@ def getNumLeafs(myTree):
             numLeafs += getNumLeafs(secondDict[key])
         else:   numLeafs += 1           # 是叶子+1
     return numLeafs
+
+
+def getTreeDepth(myTree):
+    maxDepth = 0
+    firstStr = myTree.keys()[0]
+    secondDict = myTree[firstStr]
+    for key in secondDict.keys():       # 类似深度搜索获取树高度
+        if type(secondDict[key]).__name__ =='dict':
+            thisDepth = 1 + getTreeDepth(secondDict[key])
+        else:    thisDepth += 1
+        if thisDepth > maxDepth:    maxDepth = thisDepth
+    return maxDepth
